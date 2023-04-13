@@ -10,7 +10,7 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
     //tampil semua data yang belum dihapus
     public List<Product> findByIsDeleted(Integer isDeleted);
 
-    @Query(value = "select * from product where is_deleted = 0 and id = ?", nativeQuery = true)
+    @Query(value = "select * from product where is_deleted = 0 and id_product = ?", nativeQuery = true)
     public Product findByIdProduct(Integer id);
 
 }

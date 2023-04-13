@@ -19,16 +19,16 @@ public class Product {
     @GeneratedValue (strategy  = GenerationType.IDENTITY)
     private Integer idProduct;
 
-    @Column(nullable = false)
+    @Column
     private String productName;
 
-    @Column(nullable = false)
+    @Column
     private String destination;
 
-    @Column (nullable = false)
+    @Column(nullable = false)
     private Float price;
 
-    @Column(nullable = false)
+    @Column
     private String type;
 
     @Column

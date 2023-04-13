@@ -24,17 +24,14 @@ public class ProductService implements IProductService{
     public ProductDTO create(ProductDTO productDTO) {
         Product product = new Product();
         //set value
-        product.setIdProduct(productDTO.getIdProduct());
         product.setProductName(productDTO.getProductName());
-        product.setType(product.getType());
-        product.setPrice(product.getPrice());
+        product.setType(productDTO.getType());
+        product.setPrice(productDTO.getPrice());
         product.setDestination(productDTO.getDestination());
         product.setCreatedDate(Timestamp.from(Instant.now()));
         product.setUpdatedDate(Timestamp.from(Instant.now()));
         product.setIsDeleted(0);
-        //save data
         productRepo.save(product);
-
         return new ProductDTO(product.getIdProduct(), product.getProductName(), product.getDestination(), product.getPrice(), product.getType());
     }
 
@@ -49,7 +46,7 @@ public class ProductService implements IProductService{
             product.setPrice(product.getPrice());
             product.setDestination(productDTO.getDestination());
             product.setUpdatedDate(Timestamp.from(Instant.now()));
-
+            productRepo.save(product);
             return new ProductDTO(product.getIdProduct(), product.getProductName(), product.getDestination(), product.getPrice(), product.getType());
         }
         else{
