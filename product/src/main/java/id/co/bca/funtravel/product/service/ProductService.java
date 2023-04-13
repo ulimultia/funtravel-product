@@ -4,6 +4,7 @@ import id.co.bca.funtravel.product.model.dto.ProductDTO;
 import id.co.bca.funtravel.product.model.entity.Product;
 import id.co.bca.funtravel.product.repository.ProductRepo;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,6 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -24,10 +24,8 @@ public class ProductService implements IProductService{
     public ProductDTO create(ProductDTO productDTO) {
         Product product = new Product();
         //set value
-        product.setProductName(productDTO.getProductName());
-        product.setType(productDTO.getType());
-        product.setPrice(productDTO.getPrice());
-        product.setDestination(productDTO.getDestination());
+        //BeanUtils menggantikan setter getter antar oject
+        BeanUtils.copyProperties(productDTO,product);
         product.setCreatedDate(Timestamp.from(Instant.now()));
         product.setUpdatedDate(Timestamp.from(Instant.now()));
         product.setIsDeleted(0);
@@ -41,10 +39,11 @@ public class ProductService implements IProductService{
         Product product = productRepo.findByIdProduct(productDTO.getIdProduct());
 
         if(product != null){
-            product.setProductName(productDTO.getProductName());
-            product.setType(product.getType());
-            product.setPrice(product.getPrice());
-            product.setDestination(productDTO.getDestination());
+            BeanUtils.copyProperties(productDTO,product);
+//            product.setProductName(productDTO.getProductName());
+//            product.setType(productDTO.getType());
+//            product.setPrice(productDTO.getPrice());
+//            product.setDestination(productDTO.getDestination());
             product.setUpdatedDate(Timestamp.from(Instant.now()));
             productRepo.save(product);
             return new ProductDTO(product.getIdProduct(), product.getProductName(), product.getDestination(), product.getPrice(), product.getType());

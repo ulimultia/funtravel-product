@@ -14,8 +14,5 @@ public class ProductDetailDTO {
     private Integer idProductDetail;
     private String place;
     private String description;
-    private Integer isDeleted;
-    private Timestamp createdDate;
-    private Timestamp updatedData;
     private Product product;
 }
