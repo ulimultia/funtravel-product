@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.util.Date;
+
 
 @Data
 @NoArgsConstructor
@@ -12,7 +13,15 @@ import java.sql.Timestamp;
 public class ProductDTO {
     private Integer idProduct;
     private String productName;
-    private String destination;
-    private Float price;
     private String type;
+    private String destination;
+    private Date startDate;
+    private Date endDate;
+    private Integer days;
+    private Boolean transport;
+    private Boolean hotel;
+    private Double price;
+    private Double discount;
+    private String description;
+
 }

@@ -19,53 +19,44 @@ public class ProductService implements IProductService{
     @Autowired
     private ProductRepo productRepo;
 
-    //Tambah product baru
     @Override
     public ProductDTO create(ProductDTO productDTO) {
         Product product = new Product();
-        //set value
-        //BeanUtils menggantikan setter getter antar oject
         BeanUtils.copyProperties(productDTO,product);
+        product.setIsDeleted(Boolean.FALSE);
         product.setCreatedDate(Timestamp.from(Instant.now()));
         product.setUpdatedDate(Timestamp.from(Instant.now()));
-        product.setIsDeleted(0);
         productRepo.save(product);
-        return new ProductDTO(product.getIdProduct(), product.getProductName(), product.getDestination(), product.getPrice(), product.getType());
+        return new ProductDTO(product.getIdProduct(), product.getProductName(), product.getType(), product.getDestination(), product.getStartDate(), product.getEndDate(), product.getDays(), product.getTransport(), product.getHotel(), product.getPrice(), product.getDiscount(), product.getDescription());
     }
 
-    //Update product
     @Override
     public ProductDTO update(ProductDTO productDTO) {
         Product product = productRepo.findByIdProduct(productDTO.getIdProduct());
 
         if(product != null){
             BeanUtils.copyProperties(productDTO,product);
-//            product.setProductName(productDTO.getProductName());
-//            product.setType(productDTO.getType());
-//            product.setPrice(productDTO.getPrice());
-//            product.setDestination(productDTO.getDestination());
             product.setUpdatedDate(Timestamp.from(Instant.now()));
             productRepo.save(product);
-            return new ProductDTO(product.getIdProduct(), product.getProductName(), product.getDestination(), product.getPrice(), product.getType());
+            return new ProductDTO(product.getIdProduct(), product.getProductName(), product.getType(), product.getDestination(), product.getStartDate(), product.getEndDate(), product.getDays(), product.getTransport(), product.getHotel(), product.getPrice(), product.getDiscount(), product.getDescription());
         }
         else{
             return null;
         }
-
     }
 
-    //Tampil semua produk yang belum berstatus dihapus
+    //GET ALL PRODUCT (NOT DELETED PRODUCT ONLY)
     @Override
     public List<ProductDTO> getAll() {
-        List<Product> products = productRepo.findByIsDeleted(0);
+        List<Product> products = productRepo.findByIsDeleted(Boolean.FALSE);
         List<ProductDTO> productDTOS = new ArrayList<>();
         for (Product product : products){
-            productDTOS.add(new ProductDTO(product.getIdProduct(), product.getProductName(), product.getDestination(), product.getPrice(), product.getType()));
+            productDTOS.add(new ProductDTO(product.getIdProduct(), product.getProductName(), product.getType(), product.getDestination(), product.getStartDate(), product.getEndDate(),product.getDays(), product.getTransport(), product.getHotel(), product.getPrice(), product.getDiscount(), product.getDescription()));
         }
         return productDTOS;
     }
 
-    //Tampil product berdasarkan id
+    //GET PRODUCT BY ID (NOT DELETED PRODUCT ONLY)
     @Override
     public ProductDTO getById(Integer id) {
         Product product = productRepo.findByIdProduct(id);
@@ -73,18 +64,18 @@ public class ProductService implements IProductService{
             return null;
         }
         else{
-            return new ProductDTO(product.getIdProduct(), product.getProductName(), product.getDestination(), product.getPrice(), product.getType());
+            return new ProductDTO(product.getIdProduct(), product.getProductName(), product.getType(), product.getDestination(), product.getStartDate(), product.getEndDate(), product.getDays(), product.getTransport(), product.getHotel(), product.getPrice(), product.getDiscount(), product.getDescription());
         }
     }
 
-    //soft delete
+    //SOFT DELETES
     @Override
     public ProductDTO delete(Integer id) {
         Product product = productRepo.findByIdProduct(id);
         if(product != null){
-            product.setIsDeleted(1);
+            product.setIsDeleted(Boolean.TRUE);
             productRepo.save(product);
-            return new ProductDTO(product.getIdProduct(), product.getProductName(), product.getDestination(), product.getPrice(), product.getType());
+            return new ProductDTO(product.getIdProduct(), product.getProductName(), product.getType(), product.getDestination(), product.getStartDate(), product.getEndDate(), product.getDays(), product.getTransport(), product.getHotel(), product.getPrice(), product.getDiscount(), product.getDescription());
         }
         else{
             return null;
